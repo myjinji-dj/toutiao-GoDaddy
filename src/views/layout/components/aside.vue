@@ -1,8 +1,9 @@
 <template>
 <!-- el-menu-item 的index不能重复,确保唯一 -->
+<!-- :default-active="$route.path" 默认激活的路由 (高亮导航) -->
 <el-menu
       class="nav-menu"
-      default-active="/"
+      :default-active="$route.path"
       background-color="#001d33"
       text-color="#fff"
       active-text-color="#ffd04b"
@@ -30,7 +31,7 @@
         <span slot="title">评论管理</span>
       </el-menu-item>
        <el-menu-item index="/fans">
-        <i class="el-icon-setting"></i>
+        <i class="el-icon-present"></i>
         <span slot="title">粉丝管理</span>
       </el-menu-item>
        <el-menu-item index="/settings">

@@ -28,6 +28,22 @@
       <el-radio :label="0">无图</el-radio>
       <el-radio :label="-1">自动</el-radio>
     </el-radio-group>
+    <!-- ----------封面---------------------- -->
+    <!--遍历组件 判断选中状态 type>0显示组件  -->
+    <template v-if="article.cover.type > 0">
+      <cover-upload
+      v-for="(cover, index) in article.cover.type"
+      :key="cover"
+      v-model="article.cover.images[index]"
+      />
+
+      <!-- <cover-upload
+      v-for="(cover, index) in article.cover.type"
+      :key="cover"
+      @cover-image="onshowImage(index, $event)"
+      :upload-image="article.cover.images[index]"
+      /> -->
+    </template>
   </el-form-item>
   <el-form-item label="频道" prop="channel_id">
     <el-select v-model="article.channel_id" placeholder="请选择">
@@ -46,6 +62,7 @@
 </template>
 
 <script>
+import CoverUpload from './comment/cover-upload'
 import {
   getArticleChannels,
   publishArticle,
@@ -83,7 +100,8 @@ import 'element-tiptap/lib/index.css'
 export default {
   name: 'PublishIndex',
   components: {
-    'el-tiptap': ElementTiptap
+    'el-tiptap': ElementTiptap,
+    CoverUpload
   },
   props: {},
   data () {
@@ -94,7 +112,7 @@ export default {
         content: '', // 文章内容
         // 封面
         cover: {
-          type: 0,
+          type: 1,
           images: []
         },
         channel_id: null // 频道id
@@ -227,6 +245,10 @@ export default {
         // console.log(this.$route.query.id) // 1253999219967000576
         this.article = res.data.data
       })
+    },
+    onshowImage (index, url) {
+      // console.log(url)
+      this.article.cover.images[index] = url
     }
   }
 }

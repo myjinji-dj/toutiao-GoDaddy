@@ -3,6 +3,10 @@
 // 引入
 import axios from 'axios'
 import JSONbig from 'json-bigint'
+// 非组件模块 使用 需要加载
+import router from '@/router'
+// 非组件使用 meaasge
+import { Message } from 'element-ui'
 
 const request = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn',
@@ -38,6 +42,31 @@ request.interceptors.request.use(
     return Promise.reject(error)
   }
 )
+
+// 响应拦截器(处理常用公共的的响应状态码)
+request.interceptors.response.use(function (response) {
+  return response
+}, function (error) {
+  const { status } = error.response
+  if (error.response && status === 401) {
+    // 跳转登录页面
+    // 路由跳转需要引入路由即可
+    router.push('/login')
+    // 清除本地存储的信息(user)
+    window.localStorage.removeItem('user')
+    Message.error('登录状态无效,请重新登录')
+  } else if (status === 403) { // 没有操作权限
+    // token未携带或过期
+    Message({
+      type: 'warning',
+      message: '没有操作权限'
+    })
+  } else if (status === 400) { // 客户端参数错误
+    Message('参数错误,检查参数去')
+  } else if (status >= 500) { // 服务端内部错误
+    Message.error('服务器崩溃,请稍后重试')
+  }
+})
 
 // 导出
 export default request

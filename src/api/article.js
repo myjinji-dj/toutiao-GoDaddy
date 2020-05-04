@@ -57,3 +57,19 @@ export const updatedArticle = (articleId, data, draft = false) => {
     data
   })
 }
+
+// /mp/v1_0/comments/status
+// 修改文章评论状态          articleId参数 必须驼峰命名
+export const updatedCommentStatus = (articleId, allowComment) => {
+  return request({
+    method: 'PUT',
+    url: '/mp/v1_0/comments/status',
+    params: {
+      // article_id 对象属性名不可更改 可_
+      article_id: articleId
+    },
+    data: {
+      allow_comment: allowComment
+    }
+  })
+}

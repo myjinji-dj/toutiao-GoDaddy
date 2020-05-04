@@ -53,7 +53,7 @@
 <script>
 import AppAside from './components/aside'
 import { getUserProfile } from '@/api/user'
-// import AppHeader from './components/header'
+import globalBus from '@/utils/global-bus'
 export default {
   name: 'LayoutIndex',
   components: {
@@ -73,6 +73,12 @@ export default {
   watch: {},
   created () {
     this.loadUserProfile()
+    // 注册自定义事件
+    globalBus.$on('userProfile', (data) => {
+      this.user.name = data.name
+      this.user.photo = data.photo
+      // 不可以 this.user = data 对象赋值会相互影响
+    })
   },
   mounted () {},
   methods: {
@@ -136,7 +142,7 @@ export default {
 }
 
 .main {
-    background-color: #3ba07c;
+    background-color: #ccc;
 }
 
 </style>

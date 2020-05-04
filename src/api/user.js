@@ -28,4 +28,21 @@ export const getUserProfile = () => {
     // }
   })
 }
-// 修改用户信息
+
+// 编辑修改用户信息
+export const putchUserProfile = data => {
+  return request({
+    method: 'PATCH',
+    url: '/mp/v1_0/user/profile',
+    data
+  })
+}
+
+// 编辑用户头像
+export const updatePhoto = data => {
+  return request({
+    method: 'PATCH',
+    url: '/mp/v1_0/user/photo',
+    data
+  })
+}
